@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DailyMetric {
+  id                Int       @id @default(autoincrement())
+  date              DateTime  @unique @db.Date
+  tradingVolume     Decimal?  @db.Decimal(20, 2)
+  tvl               Decimal?  @db.Decimal(20, 2)
+  stakingAmount     Decimal?  @db.Decimal(20, 2)
+  participantCount  Int?
+  luminaPrice       Decimal?  @db.Decimal(10, 6)
+  abnormalTx        Boolean   @default(false)
+  notes             String?   @db.Text
+  createdAt         DateTime  @default(now())
+
+  @@map("daily_metrics")
+}
+
+model ContractInfo {
+  id                 Int       @id @default(autoincrement())
+  contractAddress    String    @db.VarChar(42)
+  network            String    @default("BSC") @db.VarChar(20)
+  deployedAt         DateTime? @db.Date
+  bscscanUrl         String?   @db.Text
+  rewardPerBlock     String?   @db.VarChar(30)
+  bonusEndBlock      BigInt?
+  depositFee         Int       @default(0)
+  poolLimitPerUser   BigInt    @default(0)
+  adminWallet        String?   @db.VarChar(42)
+  isVerified         Boolean   @default(false)
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  @@map("contract_info")
+}
+
+model DailyChecklist {
+  id                    Int       @id @default(autoincrement())
+  date                  DateTime  @db.Date
+  checkTradingVolume    Boolean   @default(false)
+  checkTvl              Boolean   @default(false)
+  checkStaking          Boolean   @default(false)
+  checkPrice            Boolean   @default(false)
+  checkAbnormalTx       Boolean   @default(false)
+  checkCommunity        Boolean   @default(false)
+  checkLpBalance        Boolean   @default(false)
+  completedAt           DateTime?
+  createdAt             DateTime  @default(now())
+
+  @@map("daily_checklist")
+}
+
+model FinancialRecord {
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @db.Date
+  type        String    @db.VarChar(10)
+  category    String?   @db.VarChar(50)
+  amount      Decimal   @db.Decimal(20, 2)
+  description String?   @db.Text
+  createdAt   DateTime  @default(now())
+
+  @@map("financial_records")
+}
+
+model LiquidityPair {
+  id            Int       @id @default(autoincrement())
+  date          DateTime  @db.Date
+  pairName      String?   @db.VarChar(50)
+  liquidityUsd  Decimal?  @db.Decimal(20, 2)
+  volume24h     Decimal?  @db.Decimal(20, 2)
+  status        String?   @db.VarChar(20)
+  actionNeeded  String?   @db.Text
+  createdAt     DateTime  @default(now())
+
+  @@map("liquidity_pairs")
+}
+
+model Issue {
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @db.Date
+  type        String?   @db.VarChar(50)
+  severity    String?   @db.VarChar(20)
+  description String?   @db.Text
+  actionTaken String?   @db.Text
+  assignee    String?   @db.VarChar(100)
+  status      String?   @db.VarChar(20)
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@map("issues")
+}
+
+model WeeklyReport {
+  id             Int       @id @default(autoincrement())
+  weekNumber     Int
+  startDate      DateTime  @db.Date
+  endDate        DateTime  @db.Date
+  totalVolume    Decimal?  @db.Decimal(20, 2)
+  newUsers       Int?
+  tvlChange      Decimal?  @db.Decimal(10, 2)
+  stakingGrowth  Decimal?  @db.Decimal(10, 2)
+  keyIssues      String?   @db.Text
+  nextWeekPlan   String?   @db.Text
+  createdAt      DateTime  @default(now())
+
+  @@map("weekly_reports")
+}
