@@ -11,7 +11,15 @@
       "Bash(npx prisma:*)",
       "Bash(curl:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(node -e \"console.log(''JWT_SECRET='' + require(''crypto'').randomBytes(32).toString(''base64''))\")",
+      "Bash(node -e \"console.log(''NEXTAUTH_SECRET='' + require(''crypto'').randomBytes(32).toString(''base64''))\")",
+      "Bash(node -e \"console.log(''ENCRYPTION_KEY='' + require(''crypto'').randomBytes(32).toString(''base64''))\")",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

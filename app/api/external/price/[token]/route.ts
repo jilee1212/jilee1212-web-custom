@@ -3,11 +3,12 @@ import { CoinGeckoAPI } from "@/lib/api/coingecko";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
+    const { token } = await params;
     const coingecko = new CoinGeckoAPI();
-    const price = await coingecko.getTokenPrice(params.token);
+    const price = await coingecko.getTokenPrice(token);
 
     return NextResponse.json(price);
   } catch (error) {
