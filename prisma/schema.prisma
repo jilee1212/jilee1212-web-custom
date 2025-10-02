@@ -24,6 +24,8 @@ model DailyMetric {
 
 model ContractInfo {
   id                 Int       @id @default(autoincrement())
+  name               String?   @db.VarChar(100)
+  contractType       String?   @db.VarChar(50)
   contractAddress    String    @db.VarChar(42)
   network            String    @default("BSC") @db.VarChar(20)
   deployedAt         DateTime? @db.Date
@@ -34,9 +36,39 @@ model ContractInfo {
   poolLimitPerUser   BigInt    @default(0)
   adminWallet        String?   @db.VarChar(42)
   isVerified         Boolean   @default(false)
+  notes              String?   @db.Text
   updatedAt          DateTime  @default(now()) @updatedAt
+  createdAt          DateTime  @default(now())
 
   @@map("contract_info")
+}
+
+model WalletInfo {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  address     String    @db.VarChar(42)
+  type        String    @db.VarChar(50)
+  purpose     String?   @db.Text
+  network     String    @default("BSC") @db.VarChar(20)
+  isActive    Boolean   @default(true)
+  notes       String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@map("wallet_info")
+}
+
+model DeploymentParameter {
+  id              Int       @id @default(autoincrement())
+  contractInfoId  Int?
+  parameterName   String    @db.VarChar(100)
+  parameterValue  String    @db.Text
+  description     String?   @db.Text
+  category        String?   @db.VarChar(50)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+
+  @@map("deployment_parameters")
 }
 
 model DailyChecklist {
